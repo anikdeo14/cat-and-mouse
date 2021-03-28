@@ -1,45 +1,59 @@
-var bg,tom,jery;
+var bg ,canvas;
+var  tom ,tomImg1,tomImg2;
+var jerry,jerryImg1,jerryImg2;
 function preload() {
     //load the images here
     bg = loadImage("images/garden.png");
-    tomImg1 = loadAnimation("images/cat1.png");
-    jeryImg1 = loadAnimation("image/mouse1.png");
-    tomImg2 = loadAnimation("image/cat2.png,image/cat3.png");
-    jeryImg2 = loadAnimation("image/mouse2.png,image/mouse3.png");
+    tomImg1= loadAnimation("images/tomOne.png");
+    tomImg2=loadAnimation("images/tomTwo.png","images/tomThree.png");
+    tomImg3= loadAnimation("images/tomFour.png");
+    jerryImg1=loadAnimation("images/jerryOne.png");
+    jerryImg2= loadAnimation("images/jerryTwo.png","images/jerryThree.png");
+    jerryImg3=loadAnimation("images/jerryFour.png");
 }
 
 function setup(){
-    createCanvas(1000,800);
+   canvas = createCanvas(1000,800);
     //create tom and jerry sprites here
+    tom = createSprite(870, 600);
+    tom.addAnimation("tom", tomImg1);
+    tom.scale = 0.2;
 
+    jerry = createSprite(200, 600);
+    jerry.addAnimation("jerry", jerryImg1);
+    jerry.scale = 0.15;
 }
 
 function draw() {
 
     background(bg);
-    //Write condition here to evalute if tom and jerry collide
 
-    if(tom.x - jery.x <(tom.width - jery.width)/2){
-        tom.shapeColour = "images/cat4.png";
-        jery.shapeColour = "images/mouse4.png"
-    }
+    if(tom.x - jerry.x < (tom.width - jerry.width)/2)
+    { 
+        tom.velocityX=0;
+        tom.addAnimation("tomLastImage", tomImg3);
+        tom.x =300;
+        tom.scale=0.2;
+        tom.changeAnimation("tomLastImage");
+
+        jerry.addAnimation("jerryLastImage", jerryImg3);
+        jerry.scale=0.15;
+        jerry.changeAnimation("jerryLastImage");
+    }  
 
     drawSprites();
 }
 
-
-function keyPressed(){
-
-  //For moving and changing animation write code here
-  if(keyPressed === RIGHT_ARROW){
-    jery.addAnimation("teasing tom" ,jeryImg2);
-    jery.changeAnimation("teasing tom");
-    jery.frameDelay = 25;
-  }
-  if(keyPressed === LEFT_ARROW){
-      jery.addAnimation("teasing tom" ,jeryImg2);
-      jery.changeAnimation("teasing tom");
-      jery.frameDelay = 25;
-  }
-
-  }
+  function keyPressed(){
+//For moving and changing animation write code here
+    if(keyCode === LEFT_ARROW){
+        tom.velocityX = -5; 
+        tom.addAnimation("tomRunning", tomImg2);
+        tom.changeAnimation("tomRunning");
+        
+        jerry.addAnimation("jerryTeasing", jerryImg2);
+        jerry.frameDelay = 25;
+        jerry.changeAnimation("jerryTeasing");
+    }
+}
+  
